@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<!-- Esta línea activa Thymeleaf. Sin ella, los th: no funcionan -->
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Ofertas</title>
+</head>
+<body>
+
+    <h1>Ofertas</h1>
+
+    <!-- ===== 1) AÑADIR UNA OFERTA ===== -->
+    <h2>Añadir oferta</h2>
+
+    <!-- th:action = a qué dirección se envía el formulario -->
+    <form th:action="@{/ofertas/guardar}" method="post">
+        Título: <input type="text" name="titulo">
+        Descripción: <input type="text" name="descripcion">
+        <button type="submit">Añadir</button>
+    </form>
+
+    <!-- ===== 2) LISTA DE OFERTAS ===== -->
+    <h2>Lista de ofertas</h2>
+
+    <!-- th:each = "repite este bloque por cada oferta de la lista".
+         "oferta" es cada oferta en cada vuelta -->
+    <div th:each="oferta : ${ofertas}">
+
+        <!-- th:text = "escribe aquí este dato" -->
+        <b th:text="${oferta.titulo}">Título</b>
+        <span th:text="${oferta.descripcion}">Descripción</span>
+
+        <!-- EDITAR: th:value = "pon este dato dentro del campo" -->
+        <form th:action="@{/ofertas/editar}" method="post">
+            <!-- Campo oculto: guarda el título de antes para saber cuál se edita -->
+            <input type="hidden" name="tituloOriginal" th:value="${oferta.titulo}">
+            <input type="text" name="titulo" th:value="${oferta.titulo}">
+            <input type="text" name="descripcion" th:value="${oferta.descripcion}">
+            <button type="submit">Editar</button>
+        </form>
+
+        <!-- BORRAR -->
+        <form th:action="@{/ofertas/borrar}" method="post">
+            <input type="hidden" name="titulo" th:value="${oferta.titulo}">
+            <button type="submit">Borrar</button>
+        </form>
+
+        <hr>
+    </div>
+
+</body>
+</html>
